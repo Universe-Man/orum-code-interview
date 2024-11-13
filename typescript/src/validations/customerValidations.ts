@@ -8,9 +8,9 @@ const db = new Database("../transfers.db", (err) => {
 });
 
 const validateCustomer = (id: string): boolean => {
-  console.log("customer valid", id);
   let valid_customer = false;
   db.get(`SELECT * FROM customers WHERE id = ?`, [id], (row) => {
+    console.log(row)
     if (row) {
       valid_customer = true;
     };

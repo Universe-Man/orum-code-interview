@@ -7,7 +7,6 @@ import transferRoutes from "./routes/transferRoutes";
 import accountRoutes from "./routes/accountRoutes";
 import customerRoutes from "./routes/customerRoutes";
 
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
