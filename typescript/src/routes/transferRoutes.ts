@@ -38,7 +38,6 @@ router.get("/transfers", (req: Request, res: Response) => {
   });
 });
 
-
 router.get("/transfers/:id", (req: Request, res: Response) => {
   const transferId = req.params.id;
   db.get(`SELECT * FROM transfers WHERE id = ?`, [transferId], (err, row) => {
