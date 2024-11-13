@@ -4,7 +4,10 @@
   "description": "Orum code interview",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc"
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "serve": "node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -18,10 +21,15 @@
   },
   "homepage": "https://github.com/orum-io/code-interview#readme",
   "dependencies": {
-    "sqlite3": "^5.1.6"
+    "express": "^4.21.1",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.9.0",
     "@types/sqlite3": "^3.1.8",
-    "typescript": "^5.1.6"
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   }
 }
