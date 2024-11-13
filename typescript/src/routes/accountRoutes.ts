@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import { Database } from "sqlite3";
+import validateCustomer from "../validations/customerValidations";
 const router = Router();
 const config = require('../config');
 
@@ -34,7 +35,6 @@ router.get("/accounts", (req: Request, res: Response) => {
   });
 });
 
-
 router.get("/accounts/:id", (req: Request, res: Response) => {
   const transferId = req.params.id;
   db.get(`SELECT * FROM accounts WHERE id = ?`, [transferId], (err, row) => {
@@ -49,25 +49,32 @@ router.get("/accounts/:id", (req: Request, res: Response) => {
   });
 });
 
-// router.post('/accounts', (req: Request, res: Response) => {
-//   const { customer_id, account_number, routing_number } = req.body;
-//   if (!customer_id || !account_number, !routing_number) {
-//     res.status(400).send('Customer ID, Account Number, and Routing Number are Required');
-//   } else {
-//     // VALIDATIOIN
+router.post('/accounts', (req: Request, res: Response) => {
+  const { customer_id, account_number, routing_number } = req.body;
+  if (!customer_id || !account_number || !routing_number) {
+    res.status(400).send('Customer ID, Account Number, and Routing Number are Required');
+  } else {
+    // VALIDATIONS
+    const valid_customer = validateCustomer(customer_id);
+    if (!valid_customer) {
+      res.status(404).send('Customer Not Found');
+      return;
+    };
+    // CUSTOMER IS VALID
 
+    // NOTE: Here is where the routing number validations will go, imported from a accountValidations file.
 
-//     const sql = 'INSERT INTO accounts (name, price) VALUES (?, ?)';
-//     db.run(sql, [name, price], function (err: Error | null) {
-//       if (err) {
-//         console.error(err.message);
-//         res.status(500).send('Internal Server Error');
-//       } else {
-//         const id = this.lastID;
-//         res.status(201).send({ id, name, price });
-//       }
-//     });
-//   }
-// });
+    const sql = 'INSERT INTO accounts (customer_id, account_number, routing_number) VALUES (?, ?, ?)';
+    db.run(sql, [customer_id, account_number, routing_number], function (err: Error | null) {
+      if (err) {
+        console.error(err.message);
+        res.status(500).send('Internal Server Error');
+      } else {
+        const id = this.lastID;
+        res.status(201).send({ id, customer_id, account_number, routing_number });
+      }
+    });
+  }
+});
 
 export default router;

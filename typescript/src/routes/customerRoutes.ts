@@ -49,40 +49,4 @@ router.get("/customers/:id", (req: Request, res: Response) => {
   });
 });
 
-// router.post('/customers', (req: Request, res: Response) => {
-//   const { customer_id, account_number, routing_number } = req.body;
-//   if (!customer_id || !account_number, !routing_number) {
-//     res.status(400).send('Customer ID, Account Number, and Routing Number are Required');
-//   } else {
-//     // VALIDATIOIN
-
-    
-//     const sql = 'INSERT INTO customers (name, price) VALUES (?, ?)';
-//     db.run(sql, [name, price], function (err: Error | null) {
-//       if (err) {
-//         console.error(err.message);
-//         res.status(500).send('Internal Server Error');
-//       } else {
-//         const id = this.lastID;
-//         res.status(201).send({ id, name, price });
-//       }
-//     });
-//   }
-// });
-
-
-// router.get("/transfers/:id", (req: Request, res: Response) => {
-//   const transferId = req.params.id;
-//   db.get(`SELECT * FROM transfers WHERE id = ?`, [transferId], (err, row) => {
-//     if (err) {
-//       console.error(err.message);
-//       res.status(500).send('Internal Server Error');
-//     } else if (row) {
-//       res.json(row);
-//     } else {
-//       res.status(404).json({ message: "Transfer Not Found" });
-//     };
-//   });
-// });
-
 export default router;
