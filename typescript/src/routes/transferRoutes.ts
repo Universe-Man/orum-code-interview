@@ -29,6 +29,7 @@ router.get("/transfers", (req: Request, res: Response) => {
   // db.all("SELECT * FROM transfers LIMIT ?, ?", [offset, config.itemsPerPage] , (err, rows) => {
 
   db.all("SELECT * FROM transfers LIMIT ?", [config.itemsPerPage], (err, rows) => {
+  // db.all("SELECT * FROM transfers WHERE status ? LIMIT ?", [req.query.status, config.itemsPerPage], (err, rows) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Internal Server Error');
