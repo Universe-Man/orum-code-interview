@@ -21,6 +21,8 @@ interface Transfer {
   destination_account_id: number;
 };
 
+const transfersGetSql = "SELECT transfers.id, transfers.timestamp, transfers.amount, transfers.status, CONCAT(source_customers.first_name, ' ', source_customers.last_name) AS source_customer_name, transfers.source_account_id, CONCAT(dest_customers.first_name, ' ', dest_customers.last_name) AS destination_customer_name, transfers.dest_account_id AS destination_account_id FROM transfers JOIN accounts AS source_accounts ON transfers.source_account_id = source_accounts.id JOIN customers AS source_customers ON source_accounts.customer_id = source_customers.id JOIN accounts AS dest_accounts ON transfers.dest_account_id = dest_accounts.id JOIN customers AS dest_customers ON dest_accounts.customer_id = dest_customers.id";
+
 router.get("/transfers", (req: Request, res: Response) => {
   // NOTE: Having some issues with the offset based on page, will return to fix if time permits. Currently only displays first 10 items.
 
@@ -28,8 +30,8 @@ router.get("/transfers", (req: Request, res: Response) => {
   // const offset = (page - 1) * config.listPerPage;
   // db.all("SELECT * FROM transfers LIMIT ?, ?", [offset, config.itemsPerPage] , (err, rows) => {
 
-  db.all("SELECT * FROM transfers LIMIT ?", [config.itemsPerPage], (err, rows) => {
-  // db.all("SELECT * FROM transfers WHERE status ? LIMIT ?", [req.query.status, config.itemsPerPage], (err, rows) => {
+  db.all(`${transfersGetSql} LIMIT ?`, [config.itemsPerPage], (err, rows) => {
+    // db.all("SELECT * FROM transfers WHERE status ? LIMIT ?", [req.query.status, config.itemsPerPage], (err, rows) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Internal Server Error');
@@ -41,7 +43,7 @@ router.get("/transfers", (req: Request, res: Response) => {
 
 router.get("/transfers/:id", (req: Request, res: Response) => {
   const transferId = req.params.id;
-  db.get(`SELECT * FROM transfers WHERE id = ?`, [transferId], (err, row) => {
+  db.get(`${transfersGetSql} WHERE transfers.id = ?`, [transferId], (err, row) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Internal Server Error');
